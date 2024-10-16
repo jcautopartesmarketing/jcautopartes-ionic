@@ -18,21 +18,25 @@ export interface ProductoInterface { // Use PascalCase for interface names
 })
 export class FolderPage implements OnInit {
   public folder!: string;
-  public productos!: ProductoInterface[]; // Renamed to 'productos' for clarity
+  public productos!: ProductoInterface[]; // Se usa en plural ya que manejara varios productos por coleccion.
+  public subTitle!: string;
 
-  private activatedRoute = inject(ActivatedRoute);
+  private activatedRoute = inject(ActivatedRoute); // Inecta rutas Activas
 
   private productosData: { [key: string]: ProductoInterface[] } = { // Use an object to store product data
+   
     Conectores: [
       { id: '1', nombre: 'Conector 1' },
       { id: '2', nombre: 'Conector 2' },
       { id: '3', nombre: 'Conector 3' },
     ],
+    
     Piezas: [
       { id: '1', nombre: 'Pieza 1' },
       { id: '2', nombre: 'Pieza 2' },
       { id: '3', nombre: 'Pieza 3' },
     ],
+   
     Exploradoras: [
       { id: '1', nombre: 'Exploradoras 1' },
       { id: '2', nombre: 'Exploradoras 2' },
@@ -49,5 +53,6 @@ export class FolderPage implements OnInit {
   ngOnInit() {
     this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
     this.productos = this.productosData[this.folder] || []; // Assign products using the object 
+    this.subTitle = this.subTitle;
   }
 }
