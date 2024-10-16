@@ -16,8 +16,8 @@ export class AppComponent {
   public appPages = [
     { title: 'Conectores', url: '/folder/Conectores', icon: 'mail' },
     { title: 'Piezas', url: '/folder/Piezas', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
+    { title: 'Exploradoras', url: '/folder/Exploradoras', icon: 'heart' },
+    { title: 'Arranques', url: '/folder/Arranques', icon: 'archive' },
     { title: 'Trash', url: '/folder/trash', icon: 'trash' },
     { title: 'Spam', url: '/folder/spam', icon: 'warning' },
   ];
