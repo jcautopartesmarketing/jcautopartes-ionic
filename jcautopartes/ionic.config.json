@@ -1,0 +1,7 @@
+{
+  "name": "jcautopartes",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
