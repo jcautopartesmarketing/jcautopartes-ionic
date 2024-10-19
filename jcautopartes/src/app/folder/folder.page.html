@@ -15,12 +15,40 @@
     </ion-toolbar>
   </ion-header>
 
+  <section>
+    <ion-grid>
+    <ion-row>
+      @for (item of productos; track $index) {
+        <ion-col size="6" size-sm="3" >
+          <ion-card>
+            <img alt="Silhouette of mountains" src="{{item.imagen}}" />
+            <ion-card-header>
+              <ion-card-title>{{ item.nombre }}</ion-card-title>
+              <ion-card-subtitle>{{ item.nombre  }}</ion-card-subtitle>
+            </ion-card-header>
+          
+            <ion-card-content>
+              {{ item.descripcion }}
+            </ion-card-content>
+            <a href="http://wa.me/573232279602?text=Quiero%20pedir%20un%20conector%20{{item.nombre}}..." target="_blank" rel="noopener noreferrer">
+              <ion-button  color="success">Pedir por Whatsapp</ion-button>
+            </a>
+            
+          </ion-card>
+        </ion-col>
+      }
+      
+    </ion-row>
+  </ion-grid>
+  </section>
+  
+  
+<!--
   <div id="container">
     <strong class="capitalize">{{ folder }}</strong>
-
     @for (item of productos; track $index) {
       <h1>{{ item.nombre }}</h1>
-    }        
-    
-  </div>
+    }
+  </div>-->
+
 </ion-content>
