@@ -9,6 +9,11 @@ import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutlin
   logoFacebook
  } from 'ionicons/icons';
 
+ // import function to register Swiper custom elements
+import { register } from 'swiper/element/bundle';
+// register Swiper custom elements
+register();
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -29,6 +34,7 @@ export class AppComponent {
   public redesSociales = [
     { title: 'Instagram', subTitle: 'Conectores Automotrices', url: '/folder/Instagram', icon: 'mailSharp' },
     { title: 'Facebook', url: '/folder/Facebook', icon: 'mailSharp' },
+    { title: 'Consejos Automotrices', url: 'Consejos Automotrices', icon: '' },
     
   ];
   public labels = [ ];
