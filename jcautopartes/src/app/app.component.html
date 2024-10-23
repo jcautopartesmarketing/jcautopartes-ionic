@@ -2,6 +2,7 @@
   <ion-split-pane contentId="main-content">
     <ion-menu contentId="main-content" type="overlay">
       <ion-content>
+
         <ion-list id="inbox-list">
         <ion-menu-toggle>
           <a routerLink="/inicio">
@@ -14,7 +15,11 @@
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              
+                <ion-avatar>
+                  <img alt="Silhouette of a person's head" src="{{ p.icon }}" />
+                </ion-avatar>
+              
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
           </ion-menu-toggle>
@@ -25,12 +30,36 @@
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of redesSociales; let i = index">
             <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-              <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
+              <ion-avatar>
+                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
               <ion-label>{{ p.title }}</ion-label>
             </ion-item>
+
+            
           </ion-menu-toggle>
 
+          
+
         </ion-list>
+        <br><br><br>
+
+        <ion-item-divider>
+
+        </ion-item-divider>
+
+        <a href="http://wa.me/573024581809" target="_blank" rel="noopener noreferrer">
+          <ion-chip>
+            <ion-avatar>
+              <img alt="Silhouette of a person's head" src="https://scontent.feoh1-1.fna.fbcdn.net/v/t39.30808-6/330851164_888518142264283_8488153818409688239_n.png?_nc_cat=106&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=JwENu6sDAK8Q7kNvgGkffXq&_nc_ht=scontent.feoh1-1.fna&_nc_gid=A1c06qAFBkVR1uofAUXKtBD&oh=00_AYAr37AXoyTdcGKCEgWKFWmV-blGujxmiyiB7q9jJIF12A&oe=671EE2D5" />
+            </ion-avatar>
+            <ion-label>Desarrollado por: Edgar Sandoval Developer </ion-label>
+          </ion-chip>
+        </a>
+          
+        
+
+
       </ion-content>
     </ion-menu>
     <ion-router-outlet id="main-content"></ion-router-outlet>

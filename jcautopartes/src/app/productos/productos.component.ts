@@ -21,7 +21,7 @@ export class ProductosComponent  implements OnInit {
   public categorias: Categoria[] = [
     {imagen: 'url', titulo: 'Conectores', path: '/folder/Conectores'},
     {imagen: 'url', titulo: 'Piezas', path: ''},
-    {imagen: 'url', titulo: 'Exploradoras', path: ''},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/t_Profile/v1729697355/icono-exploradoras_JCAUTOPARTES.png', titulo: 'Exploradoras', path: '/folder/eXPLORADORAS'},
     {imagen: 'url', titulo: 'Baterias', path: ''},
     {imagen: 'url', titulo: 'Arranques', path: ''},
     {imagen: 'url', titulo: 'Alternadores', path: ''},
