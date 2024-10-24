@@ -44,7 +44,7 @@ export class AppComponent {
     },
     { 
       title: 'Arranques', 
-      url: '/folder/Piezas', 
+      url: '/folder/Arranques', 
       icon: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729720894/arranque-de-carro_fwlu7e.webp' 
     },
     { 
@@ -60,12 +60,12 @@ export class AppComponent {
     { 
       title: 'Sensores', 
       url: '/folder/Sensores', 
-      icon: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729721084/BATERIAS_fvn75d.jpg' 
+      icon: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729721533/sensor-levas_jnhank.png' 
     },
     { 
       title: 'Bujias', 
       url: '/folder/Bujias', 
-      icon: 'https://res.cloudinary.com/dlkqs67aj/image/upload/t_Profile/v1729702050/pngegg_11_dypbul.png' 
+      icon: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729729011/pngegg_11_1_jkim23.png' 
     },
     { 
       title: 'Frenos', 

@@ -19,15 +19,14 @@ export interface Categoria {
 export class ProductosComponent  implements OnInit {
 
   public categorias: Categoria[] = [
-    {imagen: 'url', titulo: 'Conectores', path: '/folder/Conectores'},
-    {imagen: 'url', titulo: 'Piezas', path: ''},
-    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/t_Profile/v1729697355/icono-exploradoras_JCAUTOPARTES.png', titulo: 'Exploradoras', path: '/folder/eXPLORADORAS'},
-    {imagen: 'url', titulo: 'Baterias', path: ''},
-    {imagen: 'url', titulo: 'Arranques', path: ''},
-    {imagen: 'url', titulo: 'Alternadores', path: ''},
-    {imagen: 'url', titulo: 'Bobinas', path: ''},
-    {imagen: 'url', titulo: 'Sensores', path: ''},
-    
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/t_Profile/v1729701597/icono-conectores_s2hfhs.png', titulo: 'Conectores', path: '/folder/Conectores'},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/t_Profile/v1729697355/icono-exploradoras_JCAUTOPARTES.png', titulo: 'Exploradoras', path: '/folder/Exploradoras'},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729721084/BATERIAS_fvn75d.jpg', titulo: 'Baterias', path: '/folder/Baterias'},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729720894/arranque-de-carro_fwlu7e.webp', titulo: 'Arranques', path: '/folder/Arranques'},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729702055/pngegg_3_hilj9i.png', titulo: 'Alternadores', path: '/folder/Alternadores'},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729729011/pngegg_11_1_jkim23.png', titulo: 'Bujias', path: '/folder/Bujias'},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729721533/sensor-levas_jnhank.png', titulo: 'Sensores', path: '/folder/Sensores'},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729702044/pngegg_16_fyaqi9.png', titulo: 'Frenos', path: '/folder/Frenos'},
   ];
 
   
