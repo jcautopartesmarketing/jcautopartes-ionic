@@ -23,5 +23,14 @@ export const routes: Routes = [
     path: 'Consejos Automotrices',
     loadComponent: () => import('./consejos-automotrices/consejos-automotrices.page').then( m => m.ConsejosAutomotricesPage)
   },
+  {
+    path: 'admin',
+    loadComponent: () => import('./admin/admin.page').then( m => m.AdminPage)
+  },
+  {
+    path: 'crear-usuarios',
+    loadComponent: () => import('./crear-usuarios/crear-usuarios.page').then( m => m.CrearUsuariosPage)
+  },
+  
   
 ];

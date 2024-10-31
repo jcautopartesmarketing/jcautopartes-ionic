@@ -19,7 +19,7 @@ export interface Categoria {
 export class ProductosComponent  implements OnInit {
 
   public categorias: Categoria[] = [
-    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/t_Profile/v1729701597/icono-conectores_s2hfhs.png', titulo: 'Conectores', path: '/folder/Conectores'},
+    {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729729673/ps148522851-delphi_4_pin_auto_wire_harness_pbt_pa66_automotive_ecu_connectors_ip67_ahl7lt.jpg', titulo: 'Conectores', path: '/folder/Conectores'},
     {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/t_Profile/v1729697355/icono-exploradoras_JCAUTOPARTES.png', titulo: 'Exploradoras', path: '/folder/Exploradoras'},
     {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729721084/BATERIAS_fvn75d.jpg', titulo: 'Baterias', path: '/folder/Baterias'},
     {imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729720894/arranque-de-carro_fwlu7e.webp', titulo: 'Arranques', path: '/folder/Arranques'},

@@ -1,290 +1,53 @@
 
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
-import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton } from '@ionic/angular/standalone';
+import
+ { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton } from '@ionic/angular/standalone';
 
-export interface ProductoInterface { // Use PascalCase for interface names
+export interface ProductoInterface {
   id: string;
   nombre: string;
   descripcion: string;
   imagen: string;
-  link:string;
+  cod: string;
+  precio: number;
+  stock: number;
+  activo: boolean;
 }
 
 @Component({
   selector: 'app-folder',
-  templateUrl: './folder.page.html',
+  templateUrl
+: './folder.page.html',
   styleUrls: ['./folder.page.scss'],
   standalone: true,
-  imports: [IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, CommonModule, 
+  imports: [IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonContent, CommonModule,
     IonGrid, IonRow, IonCol, IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonCardContent, IonButton
   ],
 })
 export class FolderPage implements OnInit {
-  public folder!: string;
-  public productos!: ProductoInterface[]; // Se usa en plural ya que manejara varios productos por coleccion.
+
+  firestore: Firestore = inject(Firestore);
+
+  public folder = signal<string>(''); 
+  public productos = signal<ProductoInterface[]>([]); 
   public subTitle!: string;
 
-  private activatedRoute = inject(ActivatedRoute); // Inecta rutas Activas
-
-  private productosData: { [key: string]: ProductoInterface[] } = { // Use an object to store product data
-   
-    Conectores: [
-      { id: '', nombre: 'Conector 1', descripcion: 'Este es un conector', imagen: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555546/2015_wogqmh.png', link:'' },
-      { id: '', nombre: 'Conector 2', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555532/2012_ellcdm.png', link:'' },
-      { id: '', nombre: 'Conector 3', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555518/2011_riyg92.png', link:'' },
-      { id: '', nombre: 'Conector 4', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555505/2010_rauqsj.png', link:'' },
-      { id: '', nombre: 'Conector 5', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555491/2009_uf1gv5.png', link:'' },
-      { id: '', nombre: 'Conector 6', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555455/2005_ketoda.png', link:'' },
-      { id: '', nombre: 'Conector 8', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555455/2008_svnywp.png', link:'' },
-      { id: '', nombre: 'Conector 9', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555454/2006_twkadp.png' , link:''},
-      { id: '', nombre: 'Conector 10', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555454/2004_a5vwft.png', link:'' },
-     
-      { id: '', nombre: 'Conector 12', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555454/2003_y2odfz.png', link:'' },
-      { id: '', nombre: 'Conector 13', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555338/1902_wviqhq.png', link:'' },
-      { id: '', nombre: 'Conector 14', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555338/2001_ix4tpo.png', link:'' },
-      { id: '', nombre: 'Conector 16', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555338/1978_ymzyoq.png', link:'' },
-      { id: '', nombre: 'Conector 17', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555338/1793_igko4u.png', link:'' },
-      { id: '', nombre: 'Conector 18', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555337/1754_kvw4f6.png', link:'' },
-      { id: '', nombre: 'Conector 20', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555337/1764_yyqg6t.png', link:'' },     
-      { id: '', nombre: 'Conector 22', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729555337/1551_m1ekug.png', link:'' },
-      { id: '', nombre: 'Conector 23', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554794/1514_jbe8rg.png', link:'' },
-      { id: '', nombre: 'Conector 24', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554780/1509_y5ksnx.png', link:'' },
-      { id: '', nombre: 'Conector 27', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554749/1502_ludja5.png', link:'' },
-      { id: '', nombre: 'Conector 28', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554732/1459_eeb5wx.png', link:'' },
-      { id: '', nombre: 'Conector 29', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554731/1030_daoocd.png', link:'' },
-      { id: '', nombre: 'Conector 30', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554731/1020_siwahm.png', link:'' },
-      { id: '', nombre: 'Conector 31', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554716/1010_prg7gw.png', link:'' },
-      { id: '', nombre: 'Conector 32', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554716/987_lxaics.png', link:'' },
-      { id: '', nombre: 'Conector 33', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554716/967_bgtbqs.png', link:'' },
-      { id: '', nombre: 'Conector 34', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554716/905_ms8wux.png', link:'' },
-      { id: '', nombre: 'Conector 35', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554716/883_q4njcj.png', link:'' },
-      { id: '', nombre: 'Conector 36', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554716/900_zefyg6.png', link:'' },
-      { id: '', nombre: 'Conector 37', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554716/847_rc5ygq.png', link:'' },
-      { id: '', nombre: 'Conector 38', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554716/849_jl1y91.png', link:'' },
-      { id: '', nombre: 'Conector 39', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554715/803_dozuex.png', link:'' },
-      { id: '', nombre: 'Conector 40', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554715/800_ftkvlm.png', link:'' },
-      { id: '', nombre: 'Conector 41', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554715/781_fz7lj2.png', link:'' },
-      { id: '', nombre: 'Conector 42', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554715/777_naejjw.png', link:'' },
-      { id: '', nombre: 'Conector 43', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554706/776_ct4znv.png', link:'' },
-      { id: '', nombre: 'Conector 44', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554684/730_wp825b.png', link:'' },
-      { id: '', nombre: 'Conector 45', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554684/775_lzq73r.png', link:'' },
-      { id: '', nombre: 'Conector 46', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554683/749_jn5afo.png', link:'' },
-      { id: '', nombre: 'Conector 47', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554683/741_rwtgjk.png', link:'' },
-      { id: '', nombre: 'Conector 48', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554683/740_njmwfx.png', link:'' },
-      { id: '', nombre: 'Conector 49', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554683/738_vce8hd.png', link:'' },
-      { id: '', nombre: 'Conector 50', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554683/718_jjfiym.png', link:'' },
-      { id: '', nombre: 'Conector 51', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554683/710_ykydq3.png', link:'' },
-      { id: '', nombre: 'Conector 52', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554683/702_cvei6p.png', link:'' },
-      { id: '', nombre: 'Conector 53', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/667_n9xlme.png', link:'' },
-      { id: '', nombre: 'Conector 54', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/635_fjez1p.png', link:'' },
-      { id: '', nombre: 'Conector 55', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/700_rqjowr.png', link:'' },
-      { id: '', nombre: 'Conector 56', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/651_wjdc8g.png', link:'' },
-      { id: '', nombre: 'Conector 57', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/632_k0tlkr.png', link:'' },
-      { id: '', nombre: 'Conector 58', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/630_dnwabx.png', link:'' },
-      { id: '', nombre: 'Conector 59', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/617_n6wmhf.png', link:'' },
-      { id: '', nombre: 'Conector 60', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/620_lsymfp.png', link:'' },
-      { id: '', nombre: 'Conector 61', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554682/618_zb4kcl.png', link:'' },
-      { id: '', nombre: 'Conector 62', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554681/616_kqex3m.png', link:'' },
-      { id: '', nombre: 'Conector 63', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729554536/615_zqvmr4.png', link:'' },
-      { id: '', nombre: 'Conector 64', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729553696/614_fpqwxe.png', link:'' },
-      { id: '', nombre: 'Conector 65', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552856/613_wrigmg.png', link:'' },
-      { id: '', nombre: 'Conector 66', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552793/612_z6l9ip.png', link:'' },
-      { id: '', nombre: 'Conector 67', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552779/611_ubtqax.png', link:'' },
-      { id: '', nombre: 'Conector 68', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552765/610_qiuyvq.png', link:'' },
-      { id: '', nombre: 'Conector 69', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552751/609_astgba.png', link:'' },
-      { id: '', nombre: 'Conector 70', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552737/602_fenick.png', link:'' },
-      { id: '', nombre: 'Conector 71', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552737/601_oxvjpf.png', link:'' },
-      { id: '', nombre: 'Conector 72', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552737/600_cctxco.png', link:'' },
-      { id: '', nombre: 'Conector 73', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552737/560_u5ofnr.png', link:'' },
-      { id: '', nombre: 'Conector 74', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/568_wshygd.png', link:'' },
-      { id: '', nombre: 'Conector 75', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/561_nubego.png', link:'' },
-      { id: '', nombre: 'Conector 76', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/557_y62zey.png', link:'' },
-      { id: '', nombre: 'Conector 77', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/552_yayahh.png', link:'' },
-      { id: '', nombre: 'Conector 78', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/551_hcaszd.png', link:'' },
-      { id: '', nombre: 'Conector 79', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/539_s2htga.png', link:'' },
-      { id: '', nombre: 'Conector 80', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/538_bfies7.png', link:'' },
-      { id: '', nombre: 'Conector 81', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/503_xycpkp.png', link:'' },
-      { id: '', nombre: 'Conector 82', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/537_qf5gpx.png', link:'' },
-      { id: '', nombre: 'Conector 83', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552736/525_y1vvg0.png', link:'' },
-      { id: '', nombre: 'Conector 84', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552735/500_seegyg.png', link:'' },
-      { id: '', nombre: 'Conector 85', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552196/489_vpbdgp.png', link:'' },
-      { id: '', nombre: 'Conector 86', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552133/480_zjvynd.png', link:'' },
-      { id: '', nombre: 'Conector 87', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552119/470_lhxsyz.png', link:'' },
-      { id: '', nombre: 'Conector 88', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552105/460_wf1k80.png', link:'' },
-      { id: '', nombre: 'Conector 89', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552091/450_rdz3it.png', link:'' },
-      { id: '', nombre: 'Conector 90', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552084/440_eo5rsq.png', link:'' },
-      { id: '', nombre: 'Conector 91', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552084/442_sqslor.png', link:'' },
-      { id: '', nombre: 'Conector 92', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552084/425_o3ngk9.png', link:'' },
-      { id: '', nombre: 'Conector 93', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552084/433_lqwgpw.png', link:'' },
-     
-      { id: '', nombre: 'Conector 95', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552084/430_fv8kqu.png', link:'' },
-      { id: '', nombre: 'Conector 96', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552083/422_bpsdu0.png', link:'' },
-      { id: '', nombre: 'Conector 97', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552083/412_wgjdda.png', link:'' },
-      { id: '', nombre: 'Conector 98', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552083/386_x0ynyo.png', link:'' },
-      { id: '', nombre: 'Conector 100', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552083/420_pwyk6d.png', link:'' },
-      { id: '', nombre: 'Conector 101', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552083/378_eghs8o.png', link:'' },
-      { id: '', nombre: 'Conector 102', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552083/400_g8y3tr.png', link:'' },
-      { id: '', nombre: 'Conector 103', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552083/376_efmkob.png', link:'' },
-      { id: '', nombre: 'Conector 104', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552083/350_pvoguh.png', link:'' },
-      { id: '', nombre: 'Conector 105', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552082/319_vhpvww.png', link:'' },
-      { id: '', nombre: 'Conector 106', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552078/301_mkmwop.png', link:'' },
-      { id: '', nombre: 'Conector 107', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552078/312_tm2yux.png', link:'' },
-      { id: '', nombre: 'Conector 108', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552077/300_zcnofn.png', link:'' },
-      { id: '', nombre: 'Conector 109', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552077/272_dtbocg.png', link:'' },
-      { id: '', nombre: 'Conector 110', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552077/270_kuxcg8.png', link:'' },
-      { id: '', nombre: 'Conector 111', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552077/260_fjr07f.png', link:'' },
-      { id: '', nombre: 'Conector 112', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552077/265_d8l856.png', link:'' },
-      { id: '', nombre: 'Conector 113', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552077/255_bqf5c9.png', link:'' },
-      { id: '', nombre: 'Conector 114', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552077/251_rdlt9x.png', link:'' },
-      { id: '', nombre: 'Conector 115', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552076/250_yjhax9.png', link:'' },
-      { id: '', nombre: 'Conector 116', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552076/245_ziotkr.png', link:'' },
-      { id: '', nombre: 'Conector 117', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552076/245_ziotkr.png', link:'' },
-      { id: '', nombre: 'Conector 118', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552071/231_oxsubd.png', link:'' },
-      { id: '', nombre: 'Conector 119', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552071/221_fsd3pz.png', link:'' },
-      { id: '', nombre: 'Conector 120', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552071/228_rhleil.png', link:'' },
-      { id: '', nombre: 'Conector 121', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552071/210_bhwrto.png', link:'' },
-      { id: '', nombre: 'Conector 122', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552071/200_sgrbkd.png', link:'' },
-      { id: '', nombre: 'Conector 123', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552071/191_zwwyog.png', link:'' },
-      { id: '', nombre: 'Conector 124', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552071/186_t6ryan.png', link:'' },
-      { id: '', nombre: 'Conector 125', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552070/190_g2iiox.png', link:'' },
-      { id: '', nombre: 'Conector 126', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552070/180_qwwx6e.png', link:'' },
-      { id: '', nombre: 'Conector 127', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552070/183_fffodw.png', link:'' },
-      { id: '', nombre: 'Conector 128', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552070/168_h3vcxb.png', link:'' },
-      { id: '', nombre: 'Conector 129', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552070/169_wqisvi.png', link:'' },
-      { id: '', nombre: 'Conector 130', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552065/160_gznirh.png', link:'' },
-      { id: '', nombre: 'Conector 131', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552065/155_bdrmre.png', link:'' },
-      { id: '', nombre: 'Conector 132', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552065/161_bfnau8.png', link:'' },
-      { id: '', nombre: 'Conector 133', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552065/159_uzdpcj.png', link:'' },
-      { id: '', nombre: 'Conector 134', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552064/150_ablmwi.png', link:'' },
-      { id: '', nombre: 'Conector 135', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552064/147_b1ub5j.png', link:'' },
-      { id: '', nombre: 'Conector 136', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552064/146_tddsbs.png', link:'' },
-      { id: '', nombre: 'Conector 137', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552064/145_hllfxj.png', link:'' },
-      { id: '', nombre: 'Conector 138', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552064/140_ohra7r.png', link:'' },
-      { id: '', nombre: 'Conector 139', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552064/122_vn5jlr.png', link:'' },
-      { id: '', nombre: 'Conector 140', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552064/133_nolkbv.png', link:'' },
-      
-      { id: '', nombre: 'Conector 142', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552064/135_zrk1n9.png', link:'' },
-      { id: '', nombre: 'Conector 143', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552063/120_awre2o.png', link:'' },
-      { id: '', nombre: 'Conector 144', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552057/112_wbri30.png', link:'' },
-      { id: '', nombre: 'Conector 145', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552057/111_o7yyo6.png', link:'' },
-      { id: '', nombre: 'Conector 146', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552057/109_eloiyh.png', link:'' },
-      
-      { id: '', nombre: 'Conector 148', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552057/110_nphjvl.png', link:'' },
-      { id: '', nombre: 'Conector 149', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552057/096_efwk72.png', link:'' },
-      { id: '', nombre: 'Conector 150', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552057/105_sbu70e.png', link:'' },
-      { id: '', nombre: 'Conector 151', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552056/095_iw6p1y.png', link:'' },
-      { id: '', nombre: 'Conector 152', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552056/090_lsg1pc.png', link:'' },
-      { id: '', nombre: 'Conector 153', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552056/050_fbagkw.png', link:'' },
-      { id: '', nombre: 'Conector 154', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552056/070_brbzxw.png', link:'' },
-      { id: '', nombre: 'Conector 155', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552056/080_hbmj47.png', link:'' },
-      { id: '', nombre: 'Conector 156', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552056/075_povrix.png', link:'' },
-      { id: '', nombre: 'Conector 157', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552056/055_suuuaz.png', link:'' },
-      { id: '', nombre: 'Conector 158', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552056/065_gszzq3.png', link:'' },
-      { id: '', nombre: 'Conector 159', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552055/035_j7cpda.png', link:'' },
-      { id: '', nombre: 'Conector 160', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552055/025_a03ouc.png', link:'' },
-      { id: '', nombre: 'Conector 161', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552055/040_rn44cx.png', link:'' },
-      { id: '', nombre: 'Conector 162', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552055/045_jjjrqq.png', link:'' },
-      { id: '', nombre: 'Conector 162', descripcion: 'Este es un conector', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729552055/020_xarfjz.png', link:'' },
-    
-    ],
-
-        
-    Piezas: [
-      { id: '1', nombre: 'Pieza 1', descripcion: 'Esta es una pieza', imagen:'', link:'' },
-      { id: '2', nombre: 'Pieza 2', descripcion: 'Esta es una pieza', imagen:'', link:'' },
-      { id: '3', nombre: 'Pieza 3', descripcion: 'Esta es una pieza', imagen:'', link:'' },
-    ],
-   
-    Exploradoras: [
-      { id: '1', nombre: 'Exploradora 1', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635195/923_sc0ix2.jpg', link:'' },
-      { id: '2', nombre: 'Exploradora 2', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635195/922_gtfhwl.jpg', link:'' },
-      { id: '3', nombre: 'Exploradora 3', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635195/921_drvcib.jpg', link:'' },
-      { id: '4', nombre: 'Exploradora 4', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635194/920_onyrak.jpg', link:'' },
-      { id: '5', nombre: 'Exploradora 5', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635194/920_onyrak.jpg', link:'' },
-      { id: '6', nombre: 'Exploradora 6', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635193/915_ppxg0a.jpg', link:'' },
-      { id: '7', nombre: 'Exploradora 7', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635193/917_edfeb8.jpg', link:'' },
-      { id: '8', nombre: 'Exploradora 8', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635193/917_edfeb8.jpg', link:'' },
-      { id: '9', nombre: 'Exploradora 9', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635192/914_jpket9.jpg', link:'' },
-      { id: '10', nombre: 'Exploradora 10', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635192/912_dojgng.jpg', link:'' },
-      { id: '11', nombre: 'Exploradora 11', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635191/911_hhvehd.jpg', link:'' },
-      { id: '12', nombre: 'Exploradora 12', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635191/913_yka7qc.jpg', link:'' },
-      { id: '13', nombre: 'Exploradora 13', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635191/913_yka7qc.jpg', link:'' },
-      { id: '14', nombre: 'Exploradora 14', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635190/907_faju6z.jpghttps://res.cloudinary.com/dlkqs67aj/image/upload/v1729635190/907_faju6z.jpg', link:'' },
-      { id: '15', nombre: 'Exploradora 15', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635190/909_jhaerb.jpg', link:'' },
-      { id: '16', nombre: 'Exploradora 16', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635189/908_hyr1n5.jpg', link:'' },
-      { id: '17', nombre: 'Exploradora 17', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635189/905_woyv2t.jpg', link:'' },
-      { id: '18', nombre: 'Exploradora 18', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635189/904_xdk8rp.jpg', link:'' },
-      { id: '19', nombre: 'Exploradora 19', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635189/904_xdk8rp.jpg', link:'' },
-      { id: '20', nombre: 'Exploradora 20', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635182/903_urxhxy.jpg', link:'' },
-      { id: '21', nombre: 'Exploradora 21', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635181/902_bivqfq.jpg', link:'' },
-      { id: '22', nombre: 'Exploradora 22', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635181/901_jirxqe.jpg', link:'' },
-      { id: '10', nombre: 'Exploradora 23', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635181/900_q4iah2.jpg', link:'' },
-      { id: '11', nombre: 'Exploradora 24', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635180/896_ck877z.jpg', link:'' },
-      { id: '12', nombre: 'Exploradora 25', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635179/899_kh2jvr.jpg', link:'' },
-      { id: '13', nombre: 'Exploradora 26', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635179/898_zzfqtz.jpg', link:'' },
-      { id: '14', nombre: 'Exploradora 27', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635179/897_xbqfvb.jpg', link:'' },
-      { id: '15', nombre: 'Exploradora 28', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635179/895_wry6ap.jpg', link:'' },
-      { id: '16', nombre: 'Exploradora 29', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635178/892_p2btnb.jpg', link:'' },
-      { id: '17', nombre: 'Exploradora 30', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635178/894_djpzu4.jpg', link:'' },
-      { id: '18', nombre: 'Exploradora 31', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635177/891_rfcib5.jpg', link:'' },
-      { id: '19', nombre: 'Exploradora 32', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635177/891_rfcib5.jpg', link:'' },
-      { id: '20', nombre: 'Exploradora 33', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635177/889_aq2270.jpg', link:'' },
-      { id: '21', nombre: 'Exploradora 34', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635176/887_frj2mt.jpg', link:'' },
-      { id: '22', nombre: 'Exploradora 35', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635176/887_frj2mt.jpg', link:'' },
-      { id: '10', nombre: 'Exploradora 36', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635175/888_hsvrdj.jpg', link:'' },
-      { id: '11', nombre: 'Exploradora 37', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635175/881_m9gtkz.jpg', link:'' },
-      { id: '12', nombre: 'Exploradora 38', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635175/885_hhrkif.jpg', link:'' },
-      { id: '13', nombre: 'Exploradora 39', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635175/885_hhrkif.jpg', link:'' },
-      { id: '14', nombre: 'Exploradora 40', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635175/880_hoscae.jpg', link:'' },
-      { id: '15', nombre: 'Exploradora 41', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635174/883_hdvi1z.jpg', link:'' },
-      { id: '16', nombre: 'Exploradora 42', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635174/884_qkhel5.jpg', link:'' },
-      { id: '17', nombre: 'Exploradora 43', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635173/882_axtxe5.jpg', link:'' },
-      { id: '18', nombre: 'Exploradora 44', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635173/878_mtoxso.jpg', link:'' },
-      { id: '19', nombre: 'Exploradora 45', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635172/879_hb4zjz.jpg', link:'' },
-      { id: '20', nombre: 'Exploradora 46', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635172/879_hb4zjz.jpg', link:'' },
-      { id: '21', nombre: 'Exploradora 47', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635172/877_apvpzv.jpg', link:'' },
-      { id: '22', nombre: 'Exploradora 48', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635171/863_k0krcr.jpg', link:'' },
-      { id: '10', nombre: 'Exploradora 49', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635171/863_k0krcr.jpg', link:'' },
-      { id: '11', nombre: 'Exploradora 50', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635171/875_yxq5v0.jpg', link:'' },
-      { id: '12', nombre: 'Exploradora 51', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635171/874_yzlhgi.jpg', link:'' },
-      { id: '13', nombre: 'Exploradora 52', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635171/874_yzlhgi.jpg', link:'' },
-      { id: '14', nombre: 'Exploradora 53', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635170/868_txyiha.jpg', link:'' },
-      { id: '15', nombre: 'Exploradora 54', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635169/870_metyod.jpg', link:'' },
-      { id: '16', nombre: 'Exploradora 55', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635169/870_metyod.jpg', link:'' },
-      { id: '17', nombre: 'Exploradora 56', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635168/871_fgb5vn.jpg', link:'' },
-      { id: '18', nombre: 'Exploradora 57', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635168/866_gmldqs.jpg', link:'' },
-      { id: '19', nombre: 'Exploradora 58', descripcion: 'Esta es una descripcion', imagen:'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729635168/869_akqczi.jpg', link:'' },
-      { id: '20', nombre: 'Exploradora 59', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '21', nombre: 'Exploradora 60', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '22', nombre: 'Exploradora 61', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '10', nombre: 'Exploradora 62', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '11', nombre: 'Exploradora 63', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '12', nombre: 'Exploradora 64', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '13', nombre: 'Exploradora 65', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '14', nombre: 'Exploradora 66', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '15', nombre: 'Exploradora 67', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '16', nombre: 'Exploradora 68', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '17', nombre: 'Exploradora 69', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '18', nombre: 'Exploradora 70', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '19', nombre: 'Exploradora 71', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '20', nombre: 'Exploradora 72', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '21', nombre: 'Exploradora 73', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '22', nombre: 'Exploradora 74', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-
-    ],
-
-    Arranques: [
-      { id: '1', nombre: 'Arranques 1', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '2', nombre: 'Arranques 2', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-      { id: '3', nombre: 'Arranques 3', descripcion: 'Esta es una descripcion', imagen:'', link:'' },
-    ],
-  };
+  private activatedRoute = inject(ActivatedRoute);
 
   ngOnInit() {
-    this.folder = this.activatedRoute.snapshot.paramMap.get('id') as string;
-    this.productos = this.productosData[this.folder] || []; // Assign products using the object 
-    this.subTitle = this.subTitle;
+    this.folder.set(this.activatedRoute.snapshot.paramMap.get('id') as string); 
+    this.loadProducts();
+  }
+
+  async loadProducts() {
+    const productsCollection = collection(this.firestore, this.folder()); // Get the collection based on the folder
+    
+    // Use collectionData with a signal to update the products
+    collectionData(productsCollection, { idField: 'id' }).subscribe(products => {
+      this.productos.set(products as ProductoInterface[]);
+    });
   }
 }

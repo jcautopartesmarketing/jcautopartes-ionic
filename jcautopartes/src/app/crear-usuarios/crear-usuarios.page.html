@@ -1,0 +1,102 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Crear Usuarios</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="centrado">
+
+  <div class="centrado">
+    <!---------Creamos el formulario Reactivo------->
+  <form [formGroup]="nuevoUsuario" (ngSubmit)="crearNuevoUsuario()">
+    <ion-list>
+      <ion-list>
+        <ion-item>
+          <ion-input 
+          label="Nombre" 
+          placeholder="Introduce el nombre del usuario"
+          formControlName="nombre"
+          ></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-input 
+          label="Apellido" 
+          placeholder="Introduce el apeeli del usuario"
+          formControlName="apellido"
+          ></ion-input>
+        </ion-item>
+    
+        <ion-item>
+          <ion-input 
+          label="Teléfono" 
+          placeholder="000 000 0000"
+          formControlName="telefono"
+          ></ion-input>
+          @if (nuevoUsuario.controls['telefono'].errors?.['maxlength(10)']) {
+            <span style="color: yellow;">No debe superar los 10 digitos</span>
+          }
+
+        </ion-item>
+
+        <ion-item>
+          <ion-input 
+              label="Correo" 
+              type="email" 
+              placeholder="email@gmail.com"
+              formControlName="correo"
+          ></ion-input>
+
+          @if (nuevoUsuario.controls['correo'].errors?.['email']) {
+            <span style="color: yellow;">Ingrese un email válido</span>
+          }
+          
+
+          
+        </ion-item>
+
+        
+      
+    
+        <ion-item>
+          <ion-input 
+          label="Clave" 
+          type="password" 
+          minlength="6"
+          placeholder="Contraseña"
+          formControlName="contrasena"
+          ></ion-input>
+          
+          @if (nuevoUsuario.controls['contrasena'].errors?.['required']) {
+            <span style="color: yellow;">Ingrese una contraseña !</span>
+          }
+          @if (nuevoUsuario.controls['contrasena'].errors?.['minlength(6)']) {
+            <span style="color: yellow;">La contraseña debe tener al menos 6 caracteres</span>
+          }
+          
+          
+
+
+        </ion-item>
+    
+        
+      </ion-list>
+    </ion-list>
+
+    <br>
+
+    <!--El boton lleva la propiedad CARGANDO en -->
+    <div style="text-align: center;">
+      <ion-button 
+          size="default" 
+          [disabled]="cargando" 
+          type="submit">Crear nuevo usuario</ion-button> 
+    </div>
+    
+  </form>
+
+  </div>
+  
+  
+
+</ion-content>

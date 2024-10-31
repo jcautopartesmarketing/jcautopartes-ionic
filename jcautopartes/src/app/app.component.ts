@@ -34,7 +34,7 @@ export class AppComponent {
       title: 'Conectores', 
       subTitle: 'Conectores Automotrices', 
       url: '/folder/Conectores', 
-      icon: 'https://res.cloudinary.com/dlkqs67aj/image/upload/t_Profile/v1729701597/icono-conectores_s2hfhs.png' 
+      icon: 'https://res.cloudinary.com/dlkqs67aj/image/upload/v1729729673/ps148522851-delphi_4_pin_auto_wire_harness_pbt_pa66_automotive_ecu_connectors_ip67_ahl7lt.jpg' 
     },
     
     { 
