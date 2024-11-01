@@ -4,7 +4,6 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { IonButton, IonContent, IonHeader, IonInput, IonItem, IonList, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 
 import { Auth, createUserWithEmailAndPassword, getAuth } from '@angular/fire/auth';
-import { notifications } from 'ionicons/icons';
 
 @Component({
   selector: 'app-crear-usuarios',
@@ -20,6 +19,7 @@ import { notifications } from 'ionicons/icons';
 })
 export class CrearUsuariosPage implements OnInit {
 
+  // Inyectamos una instancia de AUTH de Firebase
   private auth = inject(Auth);
   
 
@@ -36,7 +36,10 @@ export class CrearUsuariosPage implements OnInit {
     contrasena: ['', Validators.required]
   })
 
+  // Creamos una variable par controlar el estado del boton 
   cargando: boolean = false;
+
+
 
   // Funcion para crear nuevo usuario
   crearNuevoUsuario() {
@@ -67,11 +70,12 @@ export class CrearUsuariosPage implements OnInit {
       this.cargando = false; 
     }
 
-
-
-
   }
- 
+ //funcion para limpiar el form
+    limpiarForm() {
+      this.nuevoUsuario.reset();
+    }
+
 
   constructor() { }
 

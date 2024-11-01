@@ -88,9 +88,16 @@
     <!--El boton lleva la propiedad CARGANDO en -->
     <div style="text-align: center;">
       <ion-button 
-          size="default" 
+          size="default" color="success"
           [disabled]="cargando" 
           type="submit">Crear nuevo usuario</ion-button> 
+
+          <ion-button 
+          size="default" color="danger"
+          [disabled]="cargando" 
+          type="button"
+          (click)="limpiarForm()"
+          >Limpiar Formulario</ion-button> 
     </div>
     
   </form>
