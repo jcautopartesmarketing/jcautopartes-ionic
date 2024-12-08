@@ -29,6 +29,7 @@ register();
   ],
 })
 export class AppComponent {
+  
   public appPages = [
     { 
       title: 'Conectores', 

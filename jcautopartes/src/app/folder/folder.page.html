@@ -5,7 +5,7 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title> {{folder()}} </ion-title> 
+    <ion-title> {{ folder() }} </ion-title> 
   </ion-toolbar>
 </ion-header>
 
@@ -17,6 +17,7 @@
   </ion-header>
 
   <section>
+
     <ion-grid>
       <ion-row>
         @for (item of productos(); track $index) { 
@@ -39,5 +40,6 @@
         }
       </ion-row>
     </ion-grid>
+
   </section>
 </ion-content>

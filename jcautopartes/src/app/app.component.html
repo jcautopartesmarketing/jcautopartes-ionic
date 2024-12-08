@@ -14,7 +14,12 @@
           <ion-note class="color">La evolución de tu vehículo.</ion-note>
 
           <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
+            <ion-item 
+            routerDirection="root" 
+            [routerLink]="[p.url]" 
+            lines="none" 
+            detail="false" 
+            routerLinkActive="selected">
               
                 <ion-avatar>
                   <img alt="Silhouette of a person's head" src="{{ p.icon }}" />

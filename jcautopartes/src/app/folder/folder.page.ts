@@ -29,8 +29,10 @@ export interface ProductoInterface {
 })
 export class FolderPage implements OnInit {
 
+  // Instancia de Firestore
   firestore: Firestore = inject(Firestore);
 
+  // Variables para almacenar la carpeta y los productos
   public folder = signal<string>(''); 
   public productos = signal<ProductoInterface[]>([]); 
   public subTitle!: string;
@@ -42,6 +44,8 @@ export class FolderPage implements OnInit {
     this.loadProducts();
   }
 
+
+  // Funciones para cargar los productos
   async loadProducts() {
     const productsCollection = collection(this.firestore, this.folder()); // Get the collection based on the folder
     

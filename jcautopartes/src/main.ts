@@ -1,5 +1,5 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
+import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules, withViewTransitions } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 
 import { routes } from './app/app.routes';
@@ -18,8 +18,8 @@ import { Capacitor } from '@capacitor/core';
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
-    provideRouter(routes, withPreloading(PreloadAllModules)), 
+      provideIonicAngular(),
+      provideRouter(routes, withPreloading(PreloadAllModules), withViewTransitions()), 
 
     //Firebase inicialización
     provideFirebaseApp(() => initializeApp(environment.firebaseConfig)), 
@@ -35,7 +35,9 @@ bootstrapApplication(AppComponent, {
     provideFunctions(() => getFunctions()),
     provideAnalytics(() => getAnalytics()), ScreenTrackingService, UserTrackingService, 
     provideFirestore(() => { return getFirestore(); }), 
-    provideStorage(() => getStorage()), provideFirebaseApp(() => initializeApp({"projectId":"jcautopartes","appId":"1:830834835021:web:ea3261f91e3151e6cfe604","storageBucket":"jcautopartes.appspot.com","apiKey":"AIzaSyDt_Vtb3GDIfLfCAt9Z60bw3ItUdBQ-XLg","authDomain":"jcautopartes.firebaseapp.com","messagingSenderId":"830834835021","measurementId":"G-NZJBSZ3TWM"})), provideFunctions(() => getFunctions()),
+    provideStorage(() => getStorage()), 
+    provideFirebaseApp(() => initializeApp({"projectId":"jcautopartes","appId":"1:830834835021:web:ea3261f91e3151e6cfe604","storageBucket":"jcautopartes.appspot.com","apiKey":"AIzaSyDt_Vtb3GDIfLfCAt9Z60bw3ItUdBQ-XLg","authDomain":"jcautopartes.firebaseapp.com","messagingSenderId":"830834835021","measurementId":"G-NZJBSZ3TWM"})), 
+    provideFunctions(() => getFunctions()),
   ],
 })
 
