@@ -29,15 +29,21 @@ export interface ProductoInterface {
 })
 export class FolderPage implements OnInit {
 
+
+
+  
   // Instancia de Firestore
   firestore: Firestore = inject(Firestore);
+  private activatedRoute = inject(ActivatedRoute);
 
+
+  
   // Variables para almacenar la carpeta y los productos
   public folder = signal<string>(''); 
   public productos = signal<ProductoInterface[]>([]); 
   public subTitle!: string;
 
-  private activatedRoute = inject(ActivatedRoute);
+  
 
   ngOnInit() {
     this.folder.set(this.activatedRoute.snapshot.paramMap.get('id') as string); 
