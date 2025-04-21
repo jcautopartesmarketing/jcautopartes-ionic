@@ -36,7 +36,14 @@ bootstrapApplication(AppComponent, {
     provideAnalytics(() => getAnalytics()), ScreenTrackingService, UserTrackingService, 
     provideFirestore(() => { return getFirestore(); }), 
     provideStorage(() => getStorage()), 
-    provideFirebaseApp(() => initializeApp({"projectId":"jcautopartes","appId":"1:830834835021:web:ea3261f91e3151e6cfe604","storageBucket":"jcautopartes.appspot.com","apiKey":"AIzaSyDt_Vtb3GDIfLfCAt9Z60bw3ItUdBQ-XLg","authDomain":"jcautopartes.firebaseapp.com","messagingSenderId":"830834835021","measurementId":"G-NZJBSZ3TWM"})), 
+    provideFirebaseApp(() => initializeApp({
+      "projectId":"jcautopartes",
+      "appId":"1:830834835021:web:ea3261f91e3151e6cfe604",
+      "storageBucket":"jcautopartes.appspot.com",
+      "apiKey":"AIzaSyDt_Vtb3GDIfLfCAt9Z60bw3ItUdBQ-XLg",
+      "authDomain":"jcautopartes.firebaseapp.com",
+      "messagingSenderId":"830834835021",
+      "measurementId":"G-NZJBSZ3TWM"})), 
     provideFunctions(() => getFunctions()),
   ],
 })
