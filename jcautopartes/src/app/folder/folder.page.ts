@@ -1,24 +1,17 @@
 
+// Angular
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { collection, collectionData, Firestore, query, where } from '@angular/fire/firestore';
 import { ActivatedRoute } from '@angular/router';
 
-import { IonButton, IonButtons, IonCard, IonCardContent, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCol, IonContent, IonGrid, IonHeader, IonMenuButton, IonRow, IonTitle, IonToolbar } from '@ionic/angular/standalone';
+// Angular Fire
+import { collection, collectionData, Firestore, query, where } from '@angular/fire/firestore';
 
- 
+// Interface
+import { ProductInterface } from 'src/interfaces/product-interface';
 
-export interface ProductoInterface {
-  id: string;
-  nombre: string;
-  descripcion: string;
-  imagen: string;
-  cod: string;
-  precio: number;
-  stock: number;
-  folderId: string; // Add folderId
-  activo: boolean;  
-}
+// Ionic
+import { IonicModulesModule } from './ionic-modules/ionic-modules.module';
 
 @Component({
   selector: 'app-folder',
@@ -26,10 +19,8 @@ export interface ProductoInterface {
   styleUrls: ['./folder.page.scss'],
   standalone: true,
   imports: [
-    IonHeader, IonToolbar, IonButtons, IonMenuButton, 
-    IonTitle, IonContent, CommonModule,
-    IonGrid, IonRow, IonCol, IonCard, IonCardHeader, 
-    IonCardTitle, IonCardSubtitle, IonCardContent, IonButton
+    CommonModule,       // Vene del Core de Angular
+    IonicModulesModule  // Grupo de modulos para mejor lectura, creado por mi mismo dentro del folder.
   ],
 })
 export class FolderPage implements OnInit {
@@ -40,7 +31,7 @@ export class FolderPage implements OnInit {
 
   // Variables para almacenar la carpeta y los productos
   public folder = signal<string>('');
-  public productos = signal<ProductoInterface[]>([]);
+  public productos = signal<ProductInterface[]>([]);
   public subTitle!: string;
 
   ngOnInit() {
@@ -55,7 +46,7 @@ export class FolderPage implements OnInit {
   }
 
 
-  // Funciones para cargar los productos
+  // Mètodo para ller productos.
   async loadProducts() {
     try {
       const productsCollection = collection(this.firestore, 'Productos');
@@ -64,7 +55,7 @@ export class FolderPage implements OnInit {
       collectionData(q, { idField: 'id' }).subscribe({
         next: (data) => {
           // Casting explícito
-          this.productos.set(data as ProductoInterface[]);
+          this.productos.set(data as ProductInterface[]);
         },
         error: (error) => {
           console.error('Error al obtener productos:', error);
